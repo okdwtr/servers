@@ -8,25 +8,36 @@ Dockerを使用したサーバー構成管理リポジトリ
 
 ## アーキテクチャ
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         インターネット                           │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │
-                    ┌──────────▼──────────┐
-                    │   ホストOS (Linux)   │
-                    └──────────┬──────────┘
-                               │
-          ┌────────────────────┼────────────────────┐
-          │                    │                    │
-    ┌─────▼─────┐        ┌─────▼──────┐      ┌─────▼──────┐
-    │  Traefik  │        │   GitLab   │      │   Runner   │
-    │(Port 443) │        │            │      │            │
-    │  (TLS)    │        │  (Pages)   │      │ (CI/CD)    │
-    └─────┬─────┘        └─────┬──────┘      └─────▲──────┘
-          │                    │                    │
-          └────────────────────┼────────────────────┘
-                   (Docker Network)
+```mermaid
+graph TB
+    subgraph "インターネット"
+        INET["External Requests"]
+    end
+    
+    subgraph "ホストOS"
+        subgraph "Docker Network"
+            TRAEFIK["Traefik<br/>リバースプロキシ<br/>Port 443 TLS"]
+            GITLAB["GitLab<br/>コード管理"]
+            PAGES["GitLab Pages<br/>静的サイトホスティング"]
+            RUNNER["GitLab Runner<br/>CI/CD実行環境"]
+        end
+    end
+    
+    INET -->|HTTPS| TRAEFIK
+    TRAEFIK -->|HTTP| GITLAB
+    TRAEFIK -->|HTTP| PAGES
+    GITLAB -.->|CI/CD Jobs| RUNNER
+    RUNNER -.->|Results| GITLAB
+    
+    classDef external fill:#ff9999,stroke:#cc0000,stroke-width:2px,color:#000
+    classDef proxy fill:#99ccff,stroke:#0066cc,stroke-width:2px,color:#000
+    classDef service fill:#99ff99,stroke:#009900,stroke-width:2px,color:#000
+    classDef ci fill:#ffcc99,stroke:#ff6600,stroke-width:2px,color:#000
+    
+    class INET external
+    class TRAEFIK proxy
+    class GITLAB,PAGES service
+    class RUNNER ci
 ```
 
 ## 構成
