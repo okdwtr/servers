@@ -1,0 +1,45 @@
+services:
+  traefik:
+    image: traefik:v3.1
+    container_name: traefik
+    restart: unless-stopped
+
+    # 外部公開ポート（HTTP/HTTPS と管理API）
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+
+    # メンテ性のため、静的設定はCLIで最小限に明示
+    command:
+      # プロバイダ設定
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+
+      # エントリポイント
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+
+      # ダッシュボード/API（本番では network/IP 制限推奨）
+      - --api.dashboard=true
+      - --api.insecure=true
+
+      # ログ
+      - --log.level=INFO
+      - --accesslog=true
+
+    volumes:
+      # Docker provider 用: コンテナラベルの監視
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+      # File provider 用: 動的設定ファイル
+      - ./dynamic:/etc/traefik/dynamic:ro
+
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    name: proxy

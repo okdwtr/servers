@@ -1,0 +1,12 @@
+# AGENTS Instructions
+
+## Scope
+This file applies to the entire repository.
+
+## Workflow
+- Make small, focused commits (roughly one commit per logical change).
+- Before making changes, check for nested `AGENTS.md` files in the target directories.
+
+## Style
+- Keep configuration files maintainable with concise comments.
+- For infrastructure definitions, prefer explicit defaults over implicit behavior.
