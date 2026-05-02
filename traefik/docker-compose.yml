@@ -1,0 +1,32 @@
+services:
+  traefik:
+    image: traefik:v3.1
+    container_name: traefik
+    restart: unless-stopped
+
+    # 外部公開ポート（HTTP/HTTPS と管理API）
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+
+    # Traefik 設定ファイル（静的設定）を明示
+    command:
+      - --configFile=/etc/traefik/traefik.yml
+
+    volumes:
+      # Docker provider 用: コンテナラベルの監視
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+      # 静的設定ファイル
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+
+      # File provider 用: 動的設定ファイル
+      - ./dynamic:/etc/traefik/dynamic:ro
+
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    name: proxy
