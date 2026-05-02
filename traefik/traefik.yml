@@ -1,0 +1,28 @@
+# Traefik 静的設定ファイル
+# - コンテナ起動定義（compose）と分離して見通しを向上
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+providers:
+  # Docker ラベルから動的ルーティング情報を取得
+  docker:
+    exposedByDefault: false
+
+  # ファイルから動的ルーティング情報を取得
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+
+api:
+  dashboard: true
+  # 開発/検証向け。公開環境では無効化またはアクセス制限を推奨
+  insecure: true
+
+log:
+  level: INFO
+
+accessLog: {}

@@ -10,3 +10,5 @@ This file applies to the entire repository.
 ## Style
 - Keep configuration files maintainable with concise comments.
 - For infrastructure definitions, prefer explicit defaults over implicit behavior.
+
+- Traefik compose and Traefik configuration should be split into separate files for readability.
