@@ -1,0 +1,35 @@
+# Providers config
+providers:
+  docker: # Dockerとの連携を有効
+    exposedByDefault: false # 個々のコンテナで明示的に公開設定を必要とする（不用意な公開防止）
+
+# API/Dashboard config
+api:
+  insecure: false # APIは非公開
+  dashboard: true # dashboardは有効
+
+# ポートの設定
+entryPoints:
+  ssh:
+    # 80番ポートで待ち受ける web というエントリポイントを作成
+    address: ":22"
+  web:
+    # 80番ポートで待ち受ける web というエントリポイントを作成
+    address: ":80"
+  secure:
+    # 443番ポートで待ち受ける secure というエントリポイントを作成
+    address: ":443"
+    # secure では TLS 接続を終端させる
+    http:
+      tls: true
+  webapp:
+    # 8000番ポートで待ち受ける webapp というエントリポイントを作成
+    address: ":8000"
+
+# certificatesResolvers:
+#   default:
+#     acme:
+#       email: system@test.local
+#       storage: acme.json
+#       httpChallenge:
+#         entryPoint: web
