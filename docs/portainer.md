@@ -40,7 +40,7 @@ docker compose up -d
 
 | 項目 | 内容 |
 |------|------|
-| イメージ | `portainer/portainer-ce:2.21.4` |
+| イメージ | `portainer/portainer-ce:2.41.0` |
 | ボリューム | `portainer_data`（設定データの永続化） |
 | Docker ソケット | `/var/run/docker.sock`（コンテナ管理のためマウント） |
 | ネットワーク | `proxy`（Traefik と共有する外部ネットワーク） |
@@ -50,4 +50,4 @@ docker compose up -d
 
 - Traefik と GitLab はこの Portainer から管理しません。それぞれのディレクトリで CLI 操作を行ってください。
 - Docker ソケットは Portainer がコンテナを管理するために必要です。セキュリティ上の懸念がある場合は [Portainer Agent](https://docs.portainer.io/admin/environments/add/docker/agent) の利用を検討してください。
-- バージョンアップ時は `compose.yaml` の `image` タグを確認・更新してください（例: `portainer/portainer-ce:2.21.4` → 新バージョン）。
+- バージョンアップ時は `compose.yaml` の `image` タグを確認・更新してください（例: `portainer/portainer-ce:2.41.0` → 新バージョン）。
