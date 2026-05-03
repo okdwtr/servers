@@ -17,11 +17,23 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=proxy
-      - traefik.http.routers.traefik-dashboard.rule=Host(`traefik.domain.tld`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
-      - traefik.http.routers.traefik-dashboard.entrypoints=websecure
-      - traefik.http.routers.traefik-dashboard.tls=true
-      - traefik.http.routers.traefik-dashboard.service=api@internal
-      # - traefik.http.routers.traefik-dashboard.middlewares=traefik-dashboard-auth
+
+      # HTTP dashboard
+      - traefik.http.routers.traefik-dashboard-http.rule=Host(`traefik.example.com`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+      - traefik.http.routers.traefik-dashboard-http.entrypoints=web
+      - traefik.http.routers.traefik-dashboard-http.service=api@internal
+      # - traefik.http.routers.traefik-dashboard-http.middlewares=redirect-to-https
+      # - traefik.http.routers.traefik-dashboard-http.middlewares=traefik-dashboard-auth
+
+      # HTTPS dashboard
+      - traefik.http.routers.traefik-dashboard-https.rule=Host(`traefik.example.com`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+      - traefik.http.routers.traefik-dashboard-https.entrypoints=websecure
+      - traefik.http.routers.traefik-dashboard-https.tls=true
+      - traefik.http.routers.traefik-dashboard-https.service=api@internal
+      # - traefik.http.routers.traefik-dashboard-https.middlewares=traefik-dashboard-auth
+
+      # Middleware
+      # - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
       # - traefik.http.middlewares.traefik-dashboard-auth.basicauth.users=admin:REPLACE_WITH_HTPASSWD_HASH
 
     volumes:
