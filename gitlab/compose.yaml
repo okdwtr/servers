@@ -8,12 +8,29 @@ services:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'http://gitlab.local'
         gitlab_rails['gitlab_shell_ssh_port'] = 2222
+
+    # 外部公開ポート（HTTP/HTTPS）とSSHポートをマッピング
     ports:
       - "80:80"
       - "443:443"
       - "2222:22"
+
     volumes:
+      # GitLab の設定、ログ、データをホストのディレクトリにマッピング
       - ./config:/etc/gitlab
+
+      # GitLab のログとデータをホストのディレクトリにマッピング
       - ./logs:/var/log/gitlab
+
+      # GitLab のデータをホストのディレクトリにマッピング
       - ./data:/var/opt/gitlab
+
+    # ヘルスチェック設定
+    healthcheck:
+      test: ["CMD", "/usr/local/sbin/healthcheck"]
+      interval: 1m        # チェック間隔
+      timeout: 10s        # タイムアウト
+      retries: 5          # リトライ回数
+      start_period: 3m    # 初回起動の猶予時間（長めに設定）
+
     shm_size: "256m"
