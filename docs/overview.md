@@ -10,6 +10,9 @@
 - GitLab（コード管理）
 - GitLab Pages（静的サイトホスティング）
 - GitLab Runner（CI/CD 実行環境）
+- Prometheus（メトリクス収集）
+- Grafana（可視化ダッシュボード）
+- Grafana Loki（ログ集約）
 
 ## 2. 通信フロー
 
@@ -41,6 +44,21 @@
 
 - CI/CD ジョブ実行
 - GitLab への実行結果返却
+
+### Prometheus
+
+- メトリクス収集・保存
+- Loki などのサービスをスクレイプ対象に設定可能
+
+### Grafana
+
+- Prometheus・Loki を統合した可視化ダッシュボード
+- データソースはプロビジョニングにより自動設定
+
+### Grafana Loki
+
+- ログ集約・保存
+- Promtail 等のエージェント経由でログを受信
 
 ## 4. 前提環境
 
