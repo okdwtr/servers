@@ -1,11 +1,11 @@
 # Traefik の routing にサービスを join する方法
 
 このドキュメントでは、アプリケーションコンテナを Traefik のルーティング対象に参加させるために、
-`docker-compose.yml` に何を記載するべきかを説明します。
+`compose.yaml` に何を記載するべきかを説明します。
 
 ## 前提
 
-- Traefik 本体は `traefik/docker-compose.yml` で起動済み。
+- Traefik 本体は `traefik/compose.yaml` で起動済み。
 - Traefik と同じ Docker ネットワーク（`proxy`）にアプリケーションを接続できること。
 - Traefik 側で Docker provider が有効になっていること。
 
