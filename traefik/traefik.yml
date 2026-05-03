@@ -19,8 +19,8 @@ providers:
 
 api:
   dashboard: true
-  # 開発/検証向け。公開環境では無効化またはアクセス制限を推奨
-  insecure: true
+  # API/Dashboard をエントリポイント経由でのみ公開するため無効化
+  insecure: false
 
 log:
   level: INFO

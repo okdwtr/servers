@@ -4,11 +4,10 @@ services:
     container_name: traefik
     restart: unless-stopped
 
-    # 外部公開ポート（HTTP/HTTPS と管理API）
+    # 外部公開ポート（HTTP/HTTPS）
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
 
     # Traefik 設定ファイル（静的設定）を明示
     command:
