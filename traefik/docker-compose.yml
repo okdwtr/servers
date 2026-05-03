@@ -4,15 +4,25 @@ services:
     container_name: traefik
     restart: unless-stopped
 
-    # 外部公開ポート（HTTP/HTTPS と管理API）
+    # 外部公開ポート（HTTP/HTTPS）
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
 
     # Traefik 設定ファイル（静的設定）を明示
     command:
       - --configFile=/etc/traefik/traefik.yml
+
+    # Dashboard 公開（compose ラベル管理）
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.traefik-dashboard.rule=Host(`traefik.domain.tld`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+      - traefik.http.routers.traefik-dashboard.entrypoints=websecure
+      - traefik.http.routers.traefik-dashboard.tls=true
+      - traefik.http.routers.traefik-dashboard.service=api@internal
+      # - traefik.http.routers.traefik-dashboard.middlewares=traefik-dashboard-auth
+      # - traefik.http.middlewares.traefik-dashboard-auth.basicauth.users=admin:REPLACE_WITH_HTPASSWD_HASH
 
     volumes:
       # Docker provider 用: コンテナラベルの監視
