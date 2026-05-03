@@ -1,4 +1,5 @@
 services:
+  # GitLab 本体
   gitlab:
     image: gitlab/gitlab-ce:18.11.2-ce.0
     container_name: gitlab
@@ -61,6 +62,24 @@ services:
     # network は Traefik と GitLab 関連の両方に接続
     networks:
       - proxy
+      - gitlab-network
+
+  # GitLab Runner
+  gitlab-runner:
+    image: gitlab/gitlab-runner:v18.11.2
+    container_name: gitlab-runner
+    restart: unless-stopped
+    depends_on:
+        - gitlab
+
+    volumes:
+      # GitLab Runner の設定をホストのディレクトリにマッピング
+      - './config-runner:/etc/gitlab-runner'
+      # GitLab Runner が Docker コマンドを実行できるようにするため、Docker ソケットをマッピング
+      - '/var/run/docker.sock:/var/run/docker.sock'
+
+    # GitLab Runner は GitLab と同じネットワークにだけ接続
+    networks:
       - gitlab-network
 
 networks:
