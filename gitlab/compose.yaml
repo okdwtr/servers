@@ -10,10 +10,10 @@ services:
         external_url 'http://gitlab.example.com'
         gitlab_rails['gitlab_shell_ssh_port'] = 22
 
-    # SSH ポートのみホストに公開し、Web は Traefik 経由で公開
-    ports:
-      - "2222:22"
+    # ポートはホストに非公開
+    # SSH, Web は Traefik 経由で公開
     expose:
+      - "22"
       - "80"
 
     volumes:
