@@ -1,0 +1,17 @@
+# File provider 向けの動的設定サンプルです。
+# すべてコメントアウトしているため、そのままでは有効化されません。
+# 必要に応じてコメントを外し、実運用用の値に置き換えてください。
+
+# http:
+#   routers:
+#     sample-router:
+#       rule: "Host(`example.local`)"
+#       entryPoints:
+#         - web
+#       service: sample-service
+#
+#   services:
+#     sample-service:
+#       loadBalancer:
+#         servers:
+#           - url: "http://whoami:80"
