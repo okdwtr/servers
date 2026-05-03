@@ -20,6 +20,7 @@ graph TB
             GITLAB["GitLab<br/>コード管理"]
             PAGES["GitLab Pages<br/>静的サイトホスティング"]
             RUNNER["GitLab Runner<br/>CI/CD実行環境"]
+            PORTAINER["Portainer<br/>追加サービス管理"]
         end
     end
     
@@ -36,7 +37,7 @@ graph TB
     
     class INET external
     class TRAEFIK proxy
-    class GITLAB,PAGES service
+    class GITLAB,PAGES,PORTAINER service
     class RUNNER ci
 ```
 
@@ -56,6 +57,11 @@ GitLab CIパイプラインの実行環境
 
 #### Pages
 静的サイトホスティング機能
+
+### Portainer
+ユーザーが希望する追加サービスをネットワーク経由で簡単に利用・管理するための管理UI。
+- 対象: 追加サービス
+- 対象外: Traefik / GitLab（これらは従来どおりCLIから起動）
 
 ## 必要な環境
 
