@@ -2,6 +2,8 @@
 # - コンテナ起動定義（compose）と分離して見通しを向上
 
 entryPoints:
+  ssh:
+    address: ":22"
   web:
     address: ":80"
   websecure:
