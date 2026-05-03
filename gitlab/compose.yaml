@@ -3,10 +3,10 @@ services:
     image: gitlab/gitlab-ce:18.11.2-ce.0
     container_name: gitlab
     restart: unless-stopped
-    hostname: gitlab.local
+    hostname: gitlab.example.com
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://gitlab.local'
+        external_url 'http://gitlab.example.com'
         gitlab_rails['gitlab_shell_ssh_port'] = 2222
 
     # 外部公開ポート（HTTP/HTTPS）とSSHポートをマッピング
@@ -34,3 +34,38 @@ services:
       start_period: 3m    # 初回起動の猶予時間（長めに設定）
 
     shm_size: "256m"
+
+    # Dashboard 公開（compose ラベル管理）
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+
+      # HTTP dashboard
+      - traefik.http.routers.gitlab-http.rule=Host(`gitlab.example.com`)
+      - traefik.http.routers.gitlab-http.entrypoints=web
+      - traefik.http.routers.gitlab-http.service=gitlab
+      # - traefik.http.routers.gitlab-http.middlewares=redirect-to-https
+
+      # HTTPS dashboard
+      - traefik.http.routers.gitlab-https.rule=Host(`gitlab.example.com`)
+      - traefik.http.routers.gitlab-https.entrypoints=websecure
+      - traefik.http.routers.gitlab-https.tls=true
+      - traefik.http.routers.gitlab-https.service=gitlab
+
+      # backend port
+      - traefik.http.services.gitlab.loadbalancer.server.port=80
+
+      # Middleware
+      # - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+
+    # network は Traefik と GitLab 関連の両方に接続
+    networks:
+      - proxy
+      - gitlab-network
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+  gitlab-network:
+    driver: bridge
