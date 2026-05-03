@@ -14,9 +14,10 @@
 ## 2. 通信フロー
 
 1. 外部からの HTTPS リクエストは Traefik が受け付けます。
-2. Traefik がホスト名やルールに基づき GitLab / Pages へ HTTP ルーティングします。
-3. GitLab の CI/CD ジョブは Runner で実行されます。
-4. 実行結果は GitLab に返却されます。
+2. 外部からの Git-over-SSH（ポート 22）も Traefik が受け付け、GitLab へ TCP ルーティングします。
+3. Traefik がホスト名やルールに基づき GitLab / Pages へ HTTP ルーティングします。
+4. GitLab の CI/CD ジョブは Runner で実行されます。
+5. 実行結果は GitLab に返却されます。
 
 ## 3. コンポーネント責務
 
